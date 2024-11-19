@@ -1,2 +1,2 @@
 # playlist-dedup
-Removes duplicate songs from Spotify playlists. I might add other services.
+Spotify handles duplicate songs in playlists very poorly, especially when transferring songs from another service.
