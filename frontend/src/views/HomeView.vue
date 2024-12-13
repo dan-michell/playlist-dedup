@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import MainHeading from '@/components/typography/MainHeading.vue'
 import MutedHeading from '@/components/typography/MutedHeading.vue'
-import SubHeading from '@/components/typography/SubHeading.vue'
+import SpotifyConnectItem from '@/components/SpotifyConnectItem.vue'
 import { Icon } from '@iconify/vue'
 </script>
 
@@ -15,11 +15,6 @@ import { Icon } from '@iconify/vue'
       >Spotify handles duplicate song removal badly. Continue below to cleanse your playlists and
       your mind.</MutedHeading
     >
-    <button
-      class="flex flex-col items-center gap-1 mt-[10vh] transition-all duration-300 hover:scale-110"
-    >
-      <Icon icon="logos:spotify-icon" width="45" />
-      <SubHeading>Connect Spotify</SubHeading>
-    </button>
+    <SpotifyConnectItem />
   </div>
 </template>
