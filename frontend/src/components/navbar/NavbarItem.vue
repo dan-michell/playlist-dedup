@@ -1,9 +1,19 @@
 <script setup lang="ts">
+import { RouterLink } from 'vue-router'
 import ColourModeToggle from './ColourModeToggle.vue'
+import { Icon } from '@iconify/vue'
+RouterLink
 </script>
 
 <template>
-  <div class="border-2 border-blue-600 h-[10vh] flex items-center">
-    <div class="border-2 border-red-800 inline-block ml-auto mr-[2vw]"><ColourModeToggle /></div>
+  <div class="h-[10vh] flex items-center">
+    <RouterLink to="/">
+      <Icon
+        icon="proicons:arrow-minimize"
+        width="25"
+        class="hover:scale-110 transition-all duration-300"
+      />
+    </RouterLink>
+    <div class="inline-block ml-auto mr-[2vw]"><ColourModeToggle /></div>
   </div>
 </template>

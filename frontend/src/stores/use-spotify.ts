@@ -1,10 +1,10 @@
 import { defineStore } from 'pinia'
 import { computed } from 'vue'
-import Networking from '@/networking'
+import Spotify from '@/api/spotify'
 
-const networking = new Networking()
+const spotify = new Spotify()
 
-export const useNetworkingStore = defineStore('networking', () => {
+export const useSpotifyStore = defineStore('spotify', () => {
   // Define computed variable that stores result of api fetch
   const res = computed(() => {
     return
