@@ -9,7 +9,7 @@ const mode = useColorMode({ disableTransition: false })
   <button
     @click="mode = mode === 'light' ? 'dark' : 'light'"
     variant="ghost"
-    class="aspect-square w-[3rem] flex items-center justify-center hover:scale-110 rounded-xl transition-all duration-300"
+    class="flex items-center justify-center rounded-xl transition-all hover:scale-110"
   >
     <Icon
       icon="radix-icons:moon"

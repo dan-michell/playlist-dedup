@@ -1,7 +1,5 @@
 <script setup lang="ts"></script>
 
 <template>
-  <p class="md:text-xl text-lg text-muted-foreground text-center">
-    <slot />
-  </p>
+  <h4 class="scroll-m-20 text-xl sm:text-2xl font-semibold tracking-tight"><slot /></h4>
 </template>

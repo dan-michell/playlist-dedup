@@ -8,12 +8,8 @@ RouterLink
 <template>
   <div class="h-[10vh] flex items-center">
     <RouterLink to="/">
-      <Icon
-        icon="proicons:arrow-minimize"
-        width="25"
-        class="hover:scale-110 transition-all duration-300"
-      />
+      <Icon icon="proicons:arrow-minimize" width="25" class="hover:scale-110 transition-all" />
     </RouterLink>
-    <div class="inline-block ml-auto mr-[2vw]"><ColourModeToggle /></div>
+    <div class="inline-block ml-auto"><ColourModeToggle /></div>
   </div>
 </template>
