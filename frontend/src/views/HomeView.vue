@@ -12,7 +12,7 @@ import { Icon } from '@iconify/vue'
       <MainHeading>spotify-deduplicator </MainHeading>
     </div>
     <MutedHeading
-      >Spotify handles duplicate song removal badly. Continue below to cleanse your playlists and
+      >Spotify resolves duplicate song removal badly. Continue below to cleanse your playlists and
       your mind.</MutedHeading
     >
     <SpotifyConnectItem />
