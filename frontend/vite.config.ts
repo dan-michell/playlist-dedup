@@ -8,15 +8,16 @@ import tailwind from 'tailwindcss'
 
 // https://vite.dev/config/
 export default defineConfig({
-  css: {
-    postcss: {
-      plugins: [tailwind(), autoprefixer()],
+    css: {
+        postcss: {
+            plugins: [tailwind(), autoprefixer()],
+        },
     },
-  },
-  plugins: [vue(), vueDevTools()],
-  resolve: {
-    alias: {
-      '@': fileURLToPath(new URL('./src', import.meta.url)),
+    plugins: [vue(), vueDevTools()],
+    resolve: {
+        alias: {
+            '@': fileURLToPath(new URL('./src', import.meta.url)),
+        },
     },
-  },
+    envDir: './src/api',
 })
