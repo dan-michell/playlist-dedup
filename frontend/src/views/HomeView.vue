@@ -2,7 +2,11 @@
 import MainHeading from '@/components/typography/MainHeading.vue'
 import MutedHeading from '@/components/typography/MutedHeading.vue'
 import SpotifyConnectItem from '@/components/SpotifyConnectItem.vue'
+import Spotify from '@/api/spotify'
 import { Icon } from '@iconify/vue'
+import { RouterLink } from 'vue-router'
+
+const spotify = new Spotify()
 </script>
 
 <template>
@@ -16,8 +20,10 @@ import { Icon } from '@iconify/vue'
             and your mind.</MutedHeading
         >
         <div class="mt-10">
-            <!-- TODO: Conditionally render spotify connect or continue to deduplicate based on if the access token is set -->
-            <SpotifyConnectItem />
+            <RouterLink v-if="spotify.access_token_set" to="/deduplicate">
+                <SpotifyConnectItem>Continue</SpotifyConnectItem>
+            </RouterLink>
+            <SpotifyConnectItem v-else>Connect Spotify</SpotifyConnectItem>
         </div>
     </div>
 </template>
