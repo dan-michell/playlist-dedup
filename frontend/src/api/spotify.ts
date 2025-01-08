@@ -4,20 +4,15 @@ export default class Spotify {
     clientId: string
     redirectUri: string
     homeUri: string
-    access_token: string | null
-    expires_at: string | null
 
     constructor() {
         this.clientId = import.meta.env.VITE_CLIENT_ID
         this.redirectUri = import.meta.env.VITE_REDIRECT_URI
         this.homeUri = import.meta.env.VITE_HOME_URI
-
-        this.access_token = window.localStorage.getItem('access_token')
-        this.expires_at = window.localStorage.getItem('expires_at')
     }
 
     get access_token_set(): boolean {
-        if (this.token_expired || !this.access_token) {
+        if (this.token_expired || window.localStorage.getItem('access_token') === 'undefined') {
             return false
         }
 
@@ -25,14 +20,46 @@ export default class Spotify {
     }
 
     get token_expired(): boolean {
-        const t = new Date()
+        const currentTime = Date.now()
+        const expiresAt = Number(window.localStorage.getItem('expires_at'))
 
-        return t.getSeconds() > Number(this.expires_at)
+        if (expiresAt) {
+            return currentTime > expiresAt
+        }
+
+        return false
+    }
+
+    disconnect() {
+        window.localStorage.removeItem('access_token')
     }
 
     async spotifyAuthRedirect() {
-        const codeVerifier = this.generateRandomString(64)
-        const codeChallenge = await this.generateCodeChallenge(codeVerifier)
+        function generateRandomString(length: number): string {
+            let text = ''
+            const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
+
+            for (let i = 0; i < length; i++) {
+                text += possible.charAt(Math.floor(Math.random() * possible.length))
+            }
+
+            return text
+        }
+
+        async function generateCodeChallenge(codeVerifier: string): Promise<string> {
+            const digest = await crypto.subtle.digest(
+                'SHA-256',
+                new TextEncoder().encode(codeVerifier),
+            )
+
+            return btoa(String.fromCharCode(...new Uint8Array(digest)))
+                .replace(/=/g, '')
+                .replace(/\+/g, '-')
+                .replace(/\//g, '_')
+        }
+
+        const codeVerifier = generateRandomString(64)
+        const codeChallenge = await generateCodeChallenge(codeVerifier)
 
         const scope = 'user-read-private user-read-email'
         const authUrl = new URL('https://accounts.spotify.com/authorize')
@@ -52,32 +79,13 @@ export default class Spotify {
         window.location.href = authUrl.toString()
     }
 
-    generateRandomString(length: number): string {
-        let text = ''
-        const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
-
-        for (let i = 0; i < length; i++) {
-            text += possible.charAt(Math.floor(Math.random() * possible.length))
-        }
-
-        return text
-    }
-
-    async generateCodeChallenge(codeVerifier: string): Promise<string> {
-        const digest = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(codeVerifier))
-
-        return btoa(String.fromCharCode(...new Uint8Array(digest)))
-            .replace(/=/g, '')
-            .replace(/\+/g, '-')
-            .replace(/\//g, '_')
-    }
-
     async setToken(): Promise<SpotifyAuthStatus> {
         if (!this.access_token_set) {
             const tokenUrl = new URL('https://accounts.spotify.com/api/token')
             const codeVerifier = window.localStorage.getItem('code_verifier')
             const code = new URLSearchParams(window.location.search).get('code')
 
+            // If user cancels Spotify auth, a code will not be provided
             if (!code) {
                 window.location.href = this.homeUri
 
@@ -114,28 +122,30 @@ export default class Spotify {
         return SpotifyAuthStatus.Success
     }
 
-    async getRefreshToken() {
-        // refresh token that has been previously stored
-        const refreshToken = localStorage.getItem('refresh_token')
-        const url = 'https://accounts.spotify.com/api/token'
+    // async useRefreshToken() {
+    //     // refresh token that has been previously stored
+    //     const refreshToken = window.localStorage.getItem('refresh_token')
+    //     const url = 'https://accounts.spotify.com/api/token'
+    //     console.log(refreshToken)
+    //     const payload = {
+    //         method: 'POST',
+    //         headers: {
+    //             'Content-Type': 'application/x-www-form-urlencoded',
+    //         },
+    //         body: new URLSearchParams({
+    //             grant_type: 'refresh_token',
+    //             refresh_token: refreshToken,
+    //             client_id: this.clientId,
+    //         }),
+    //     }
 
-        const payload = {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-            },
-            body: new URLSearchParams({
-                grant_type: 'refresh_token',
-                refresh_token: refreshToken,
-                client_id: clientId,
-            }),
-        }
-        const body = await fetch(url, payload)
-        const response = await body.json()
+    //     const body = await fetch(url, payload)
+    //     const response = await body.json()
 
-        localStorage.setItem('access_token', response.accessToken)
-        if (response.refreshToken) {
-            localStorage.setItem('refresh_token', response.refreshToken)
-        }
-    }
+    //     localStorage.setItem('access_token', response.accessToken)
+
+    //     if (response.refreshToken) {
+    //         localStorage.setItem('refresh_token', response.refreshToken)
+    //     }
+    // }
 }

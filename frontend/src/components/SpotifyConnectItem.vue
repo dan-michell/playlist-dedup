@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import Spotify from '@/api/spotify'
 import { Icon } from '@iconify/vue'
-import SubHeading from '@/components/typography/SubHeading.vue'
+import { SubHeading } from '@/components/typography/'
 
 const spotify = new Spotify()
 const authFlow = () => {
@@ -12,7 +12,7 @@ const authFlow = () => {
 <template>
     <button
         @click="authFlow"
-        class="flex flex-col items-center gap-1 transition-all duration-300 hover:scale-110"
+        class="flex flex-col items-center gap-1 transition-all hover:scale-110"
     >
         <Icon icon="logos:spotify-icon" width="45" />
         <SubHeading><slot /></SubHeading>
