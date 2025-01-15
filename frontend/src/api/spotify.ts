@@ -1,4 +1,4 @@
-import { SpotifyAuthStatus } from './enums'
+import { SpotifyAuthStatus } from '@/enums'
 
 export default class Spotify {
     clientId: string
@@ -12,7 +12,6 @@ export default class Spotify {
     }
 
     get access_token_set(): boolean {
-        console.log(window.localStorage.getItem('access_token'))
         if (this.token_expired || !window.localStorage.getItem('access_token')) {
             return false
         }
@@ -117,6 +116,9 @@ export default class Spotify {
                 window.localStorage.setItem('access_token', response.access_token)
                 window.localStorage.setItem('refresh_token', response.refresh_token)
                 window.localStorage.setItem('expires_at', expiresAt)
+            } else {
+                // 400 status code returned if authorisation code is invalid.
+                return SpotifyAuthStatus.AccessDeniedCode
             }
         }
 

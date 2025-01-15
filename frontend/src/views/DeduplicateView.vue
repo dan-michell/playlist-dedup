@@ -1,13 +1,14 @@
 <script setup lang="ts">
 import { onMounted } from 'vue'
 import Spotify from '@/api/spotify'
+import { SpotifyAuthStatus } from '@/enums'
 
 const spotify = new Spotify()
 
 onMounted(async () => {
-    await spotify.setToken()
+    const status: SpotifyAuthStatus = await spotify.setToken()
 
-    if (!spotify.access_token_set) {
+    if (status === SpotifyAuthStatus.AccessDeniedCode) {
         window.location.href = '/'
     }
 
