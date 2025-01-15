@@ -12,7 +12,8 @@ export default class Spotify {
     }
 
     get access_token_set(): boolean {
-        if (this.token_expired || window.localStorage.getItem('access_token') === 'undefined') {
+        console.log(window.localStorage.getItem('access_token'))
+        if (this.token_expired || !window.localStorage.getItem('access_token')) {
             return false
         }
 
