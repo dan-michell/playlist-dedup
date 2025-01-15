@@ -1,17 +1,16 @@
 <script setup lang="ts">
-import { onMounted, onBeforeMount } from 'vue'
+import { onMounted } from 'vue'
 import Spotify from '@/api/spotify'
 
 const spotify = new Spotify()
 
-// onMounted(() => {
-//     if (!spotify.access_token_set) {
-//         window.location.href = '/'
-//     }
-// })
-
-onBeforeMount(async () => {
+onMounted(async () => {
     await spotify.setToken()
+
+    if (!spotify.access_token_set) {
+        window.location.href = '/'
+    }
+
     // TODO: Pull users Spotify overview data.
 })
 </script>
