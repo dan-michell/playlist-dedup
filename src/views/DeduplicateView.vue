@@ -8,7 +8,7 @@ const spotifyLoginController = new SpotifyLoginController()
 onMounted(async () => {
     const status: SpotifyAuthStatus = await spotifyLoginController.setToken()
 
-    if (status === SpotifyAuthStatus.AccessDeniedCode) {
+    if (status === SpotifyAuthStatus.AccessDenied) {
         window.location.href = '/'
     }
 

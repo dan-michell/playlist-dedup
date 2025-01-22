@@ -14,7 +14,7 @@ const spotifyLoginController = new SpotifyLoginController()
         <div class="flex flex-col items-center gap-3">
             <div class="flex flex-col items-center gap-3">
                 <Icon icon="proicons:arrow-minimize" width="65" />
-                <MainHeading>spotifyLoginController-deduplicator </MainHeading>
+                <MainHeading>spotify-deduplicator </MainHeading>
             </div>
             <MutedHeading
                 >Spotify resolves duplicate song removal badly. Continue below to cleanse your
