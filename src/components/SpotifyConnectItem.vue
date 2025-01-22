@@ -1,11 +1,14 @@
 <script setup lang="ts">
-import Spotify from '@/api/spotify'
+import { SpotifyLoginController } from '@/api/spotify'
 import { Icon } from '@iconify/vue'
 import { SubHeading } from '@/components/typography/'
 
-const spotify = new Spotify()
+const spotifyLoginController = new SpotifyLoginController()
+
 const authFlow = () => {
-    return spotify.access_token_set ? null : spotify.spotifyAuthRedirect()
+    return spotifyLoginController.access_token_set
+        ? null
+        : spotifyLoginController.spotifyAuthRedirect()
 }
 </script>
 

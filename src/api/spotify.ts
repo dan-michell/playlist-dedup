@@ -1,6 +1,6 @@
 import { SpotifyAuthStatus } from '@/enums'
 
-export default class Spotify {
+export class SpotifyLoginController {
     clientId: string
     redirectUri: string
     homeUri: string
@@ -89,7 +89,7 @@ export default class Spotify {
             if (!code) {
                 window.location.href = this.homeUri
 
-                return SpotifyAuthStatus.AccessDeniedCode
+                return SpotifyAuthStatus.AccessDenied
             }
 
             const payload = {
@@ -117,8 +117,7 @@ export default class Spotify {
                 window.localStorage.setItem('refresh_token', response.refresh_token)
                 window.localStorage.setItem('expires_at', expiresAt)
             } else {
-                // 400 status code returned if authorisation code is invalid.
-                return SpotifyAuthStatus.AccessDeniedCode
+                return SpotifyAuthStatus.AccessDenied
             }
         }
 
@@ -151,4 +150,12 @@ export default class Spotify {
     //         localStorage.setItem('refresh_token', response.refreshToken)
     //     }
     // }
+}
+
+export class SpotifyDeduplicator {
+    // Fetch user's playlists and all associated tracks in each playlist
+    // For each playlist, check for duplicate tracks (show these to user), remove if exists
+    // and user authorises and update playlist
+    //
+    getPlaylists() {}
 }
