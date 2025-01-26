@@ -2,11 +2,14 @@
 import MainHeading from '@/components/typography/MainHeading.vue'
 import MutedHeading from '@/components/typography/MutedHeading.vue'
 import SpotifyConnectItem from '@/components/SpotifyConnectItem.vue'
-import { SpotifyLoginController } from '@/api/spotify'
 import { Icon } from '@iconify/vue'
 import { RouterLink } from 'vue-router'
+import { useSpotifyAuthStore } from '@/stores/spotifyAuthStore'
+import { storeToRefs } from 'pinia'
 
-const spotifyLoginController = new SpotifyLoginController()
+const spotifyAuthStore = useSpotifyAuthStore()
+
+const { checkTokenSet } = storeToRefs(spotifyAuthStore)
 </script>
 
 <template>
@@ -21,7 +24,7 @@ const spotifyLoginController = new SpotifyLoginController()
                 playlists and your mind.</MutedHeading
             >
             <div class="mt-10">
-                <RouterLink v-if="spotifyLoginController.access_token_set" to="/deduplicate">
+                <RouterLink v-if="checkTokenSet" to="/deduplicate">
                     <SpotifyConnectItem>Continue</SpotifyConnectItem>
                 </RouterLink>
                 <SpotifyConnectItem v-else>Connect Spotify</SpotifyConnectItem>

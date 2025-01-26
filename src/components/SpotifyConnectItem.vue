@@ -1,14 +1,15 @@
 <script setup lang="ts">
-import { SpotifyLoginController } from '@/api/spotify'
 import { Icon } from '@iconify/vue'
 import { SubHeading } from '@/components/typography/'
+import { useSpotifyAuthStore } from '@/stores/spotifyAuthStore'
+import { storeToRefs } from 'pinia'
 
-const spotifyLoginController = new SpotifyLoginController()
+const spotifyAuthStore = useSpotifyAuthStore()
 
-const authFlow = () => {
-    return spotifyLoginController.access_token_set
-        ? null
-        : spotifyLoginController.spotifyAuthRedirect()
+const { checkTokenSet } = storeToRefs(spotifyAuthStore)
+
+const authFlow = async () => {
+    return checkTokenSet.value ? null : await spotifyAuthStore.spotifyAuthRedirect()
 }
 </script>
 

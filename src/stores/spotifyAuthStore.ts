@@ -9,15 +9,18 @@ const homeUri = import.meta.env.VITE_HOME_URI
 export const useSpotifyAuthStore = defineStore('spotifyAuth', () => {
     const accessTokenSet = ref(false)
 
-    function tokenSet() {
+    const checkTokenSet = computed((): boolean => {
+        console.log('checkTokenSet')
         if (tokenExpired() || !window.localStorage.getItem('access_token')) {
-            return false
+            accessTokenSet.value = false
+        } else {
+            accessTokenSet.value = true
         }
 
-        return true
-    }
+        return accessTokenSet.value
+    })
 
-    function tokenExpired() {
+    const tokenExpired = (): boolean => {
         const currentTime = Date.now()
         const expiresAt = Number(window.localStorage.getItem('expires_at'))
 
@@ -28,11 +31,13 @@ export const useSpotifyAuthStore = defineStore('spotifyAuth', () => {
         return false
     }
 
-    function disconnect() {
+    const removeToken = (): void => {
         window.localStorage.removeItem('access_token')
+
+        accessTokenSet.value = false
     }
 
-    async function spotifyAuthRedirect() {
+    const spotifyAuthRedirect = async (): Promise<void> => {
         function generateRandomString(length: number): string {
             let text = ''
             const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
@@ -77,8 +82,8 @@ export const useSpotifyAuthStore = defineStore('spotifyAuth', () => {
         window.location.href = authUrl.toString()
     }
 
-    async function setToken(): Promise<SpotifyAuthStatus> {
-        if (!tokenSet()) {
+    const setToken = async (): Promise<SpotifyAuthStatus> => {
+        if (!checkTokenSet.value) {
             const tokenUrl = new URL('https://accounts.spotify.com/api/token')
             const codeVerifier = window.localStorage.getItem('code_verifier')
             const code = new URLSearchParams(window.location.search).get('code')
@@ -126,10 +131,38 @@ export const useSpotifyAuthStore = defineStore('spotifyAuth', () => {
         return SpotifyAuthStatus.Success
     }
 
+    // async useRefreshToken() {
+    //     // refresh token that has been previously stored
+    //     const refreshToken = window.localStorage.getItem('refresh_token')
+    //     const url = 'https://accounts.spotify.com/api/token'
+    //     console.log(refreshToken)
+    //     const payload = {
+    //         method: 'POST',
+    //         headers: {
+    //             'Content-Type': 'application/x-www-form-urlencoded',
+    //         },
+    //         body: new URLSearchParams({
+    //             grant_type: 'refresh_token',
+    //             refresh_token: refreshToken,
+    //             client_id: this.clientId,
+    //         }),
+    //     }
+
+    //     const body = await fetch(url, payload)
+    //     const response = await body.json()
+
+    //     localStorage.setItem('access_token', response.accessToken)
+
+    //     if (response.refreshToken) {
+    //         localStorage.setItem('refresh_token', response.refreshToken)
+    //     }
+    // }
+
     return {
         accessTokenSet,
+        checkTokenSet,
+        removeToken,
         spotifyAuthRedirect,
         setToken,
-        disconnect,
     }
 })

@@ -19,5 +19,5 @@ export default defineConfig({
             '@': fileURLToPath(new URL('./src', import.meta.url)),
         },
     },
-    envDir: './src/api',
+    envDir: './src',
 })
