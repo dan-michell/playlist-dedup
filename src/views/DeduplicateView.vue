@@ -2,6 +2,7 @@
 import { onMounted } from 'vue'
 import { SpotifyAuthStatus } from '@/enums'
 import { useSpotifyAuthStore } from '@/stores/spotifyAuthStore'
+import { getUserUrl } from '@/api/spotify'
 
 const spotifyAuthStore = useSpotifyAuthStore()
 
@@ -12,7 +13,11 @@ onMounted(async () => {
         window.location.href = '/'
     }
 
-    // TODO: Pull users Spotify overview data.
+    const token = window.localStorage.getItem('access_token')
+
+    if (token) {
+        await getUserUrl(token)
+    }
 })
 </script>
 
