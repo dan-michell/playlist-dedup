@@ -10,7 +10,6 @@ export const useSpotifyAuthStore = defineStore('spotifyAuth', () => {
     const accessTokenSet = ref(false)
 
     const checkTokenSet = computed((): boolean => {
-        console.log('checkTokenSet')
         if (tokenExpired() || !window.localStorage.getItem('access_token')) {
             accessTokenSet.value = false
         } else {
@@ -20,6 +19,7 @@ export const useSpotifyAuthStore = defineStore('spotifyAuth', () => {
         return accessTokenSet.value
     })
 
+    // TODO: Check this is working
     const tokenExpired = (): boolean => {
         const currentTime = Date.now()
         const expiresAt = Number(window.localStorage.getItem('expires_at'))
@@ -33,6 +33,7 @@ export const useSpotifyAuthStore = defineStore('spotifyAuth', () => {
 
     const removeToken = (): void => {
         window.localStorage.removeItem('access_token')
+        window.localStorage.removeItem('user_url')
 
         accessTokenSet.value = false
     }
@@ -60,6 +61,8 @@ export const useSpotifyAuthStore = defineStore('spotifyAuth', () => {
                 .replace(/\+/g, '-')
                 .replace(/\//g, '_')
         }
+
+        window.localStorage.removeItem('user_url')
 
         const codeVerifier = generateRandomString(64)
         const codeChallenge = await generateCodeChallenge(codeVerifier)

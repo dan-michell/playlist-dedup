@@ -13,10 +13,18 @@ onMounted(async () => {
         window.location.href = '/'
     }
 
-    const token = window.localStorage.getItem('access_token')
+    let userUrl = window.localStorage.getItem('user_url')
 
-    if (token) {
-        await getUserUrl(token)
+    if (!userUrl) {
+        // What if I log out and log back in as different user? Maybe have button click to fetch user url and populate playlists etc?
+        console.log('Ran')
+        const token = window.localStorage.getItem('access_token')
+
+        if (token) {
+            userUrl = await getUserUrl(token)
+
+            window.localStorage.setItem('user_url', userUrl)
+        }
     }
 })
 </script>
