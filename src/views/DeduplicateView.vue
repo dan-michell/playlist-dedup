@@ -1,31 +1,23 @@
 <script setup lang="ts">
 import { onMounted } from 'vue'
-import { SpotifyAuthStatus } from '@/enums'
-import { useSpotifyAuthStore } from '@/stores/spotifyAuthStore'
-import { getUserUrl } from '@/api/spotify'
+import { useSpotifyUserStore } from '@/stores/spotifyuserStore'
+import { setToken, tokenSet } from '@/utils/functions/spotifyAuth'
+import { storeToRefs } from 'pinia'
+import { HttpStatusCode } from 'axios'
 
-const spotifyAuthStore = useSpotifyAuthStore()
+const spotifyUserStore = useSpotifyUserStore()
+const { getUserId, getUserPlaylists } = spotifyUserStore
+const { userPlaylists } = storeToRefs(spotifyUserStore)
 
 onMounted(async () => {
-    const status: SpotifyAuthStatus = await spotifyAuthStore.setToken()
+    const status = await setToken()
 
-    if (status === SpotifyAuthStatus.AccessDenied) {
+    if (status !== HttpStatusCode.Ok || !tokenSet()) {
         window.location.href = '/'
     }
 
-    let userUrl = window.localStorage.getItem('user_url')
-
-    if (!userUrl) {
-        // What if I log out and log back in as different user? Maybe have button click to fetch user url and populate playlists etc?
-        console.log('Ran')
-        const token = window.localStorage.getItem('access_token')
-
-        if (token) {
-            userUrl = await getUserUrl(token)
-
-            window.localStorage.setItem('user_url', userUrl)
-        }
-    }
+    await getUserId()
+    await getUserPlaylists()
 })
 </script>
 
