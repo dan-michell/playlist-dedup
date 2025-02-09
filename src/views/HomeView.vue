@@ -8,11 +8,11 @@ import { RouterLink } from 'vue-router'
 </script>
 
 <template>
-    <div class="flex items-center sm:max-w-[90%]">
+    <div class="flex items-center h-full">
         <div class="flex flex-col items-center gap-3">
             <div class="flex flex-col items-center gap-3">
                 <Icon icon="proicons:arrow-minimize" width="65" />
-                <MainHeading>spotify-deduplicator </MainHeading>
+                <MainHeading>spotify-deduplicator</MainHeading>
             </div>
             <MutedHeading
                 >Spotify resolves duplicate song removal badly. Continue below to cleanse your

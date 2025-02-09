@@ -1,14 +1,14 @@
 <script setup lang="ts">
 import { RouterView } from 'vue-router'
 import NavbarItem from '@/components/navbar/NavbarItem.vue'
-import FooterItem from '@/components/footer/FooterItem.vue'
+import FooterItem from '@/components/FooterItem.vue'
 </script>
 
 <template>
-    <div class="h-screen w-screen flex justify-center">
-        <div class="h-full flex flex-col items-center w-[95%] sm:w-[80%] max-w-[800px] p-5">
+    <div class="min-h-screen w-screen flex justify-center">
+        <div class="w-[95%] sm:w-[80%] max-w-[800px] flex flex-col gap-10 items-center p-5">
             <NavbarItem />
-            <main class="flex h-full justify-center">
+            <main class="flex h-full w-full sm:max-w-[90%] justify-center">
                 <RouterView />
             </main>
             <FooterItem />
