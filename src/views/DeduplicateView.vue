@@ -6,6 +6,7 @@ import PlaylistCardItem from '@/components/PlaylistCardItem.vue'
 import { storeToRefs } from 'pinia'
 import { HttpStatusCode } from 'axios'
 import SubHeading from '@/components/typography/SubHeading.vue'
+import AccordionItem from '@/components/AccordionItem.vue'
 
 const spotifyUserStore = useSpotifyUserStore()
 const { userPlaylists } = storeToRefs(spotifyUserStore)
@@ -24,6 +25,7 @@ onMounted(async () => {
 <template>
     <div class="w-full flex flex-col items-center gap-10">
         <SubHeading> Duplicates </SubHeading>
+        <AccordionItem />
         <div class="w-full flex flex-wrap justify-center gap-10">
             <div v-for="playlistMetadata in userPlaylists" :key="playlistMetadata.id">
                 <playlist-card-item
