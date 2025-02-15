@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import MainHeading from '@/components/typography/MainHeading.vue'
 import MutedHeading from '@/components/typography/MutedHeading.vue'
-import SpotifyConnectItem from '@/components/SpotifyConnectItem.vue'
+import SpotifyConnectItem from '@/components/ui/SpotifyConnectItem.vue'
 import { tokenSet } from '@/utils/functions/spotifyAuth'
 import { Icon } from '@iconify/vue'
 import { RouterLink } from 'vue-router'

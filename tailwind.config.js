@@ -54,6 +54,9 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        warning: {
+          DEFAULT: "hsl(var(--warning))",
+        }
       },
       borderRadius: {
         xl: "calc(var(--radius) + 4px)",

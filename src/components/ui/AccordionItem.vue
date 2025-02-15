@@ -1,19 +1,30 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { Icon } from '@iconify/vue'
+import { SubHeading } from '@/components/typography'
+import AlertCountItem from '@/components/ui/AlertCountItem.vue'
 
 interface Props {
     imageHref: string
     playlistName: string
 }
 
-// const props = defineProps<Props>()
+const props = defineProps<Props>()
 
 const showPanel = ref(false)
 </script>
 
 <template>
-    <div class="border-2 border-white p-0 flex">
+    <div class="w-full p-3 flex justify-between rounded-lg bg-card my-5 shadow-md relative">
+        <alert-count-item :count="8" />
+        <div class="flex items-center gap-5">
+            <img
+                :src="props.imageHref"
+                alt="playlist image"
+                class="max-w-[15%] object-cover rounded-lg"
+            />
+            <sub-heading>{{ props.playlistName }}</sub-heading>
+        </div>
         <button
             @click="showPanel = !showPanel"
             variant="ghost"
@@ -21,7 +32,7 @@ const showPanel = ref(false)
         >
             <Icon
                 icon="proicons:chevron-down"
-                width="30"
+                width="36"
                 class="transition-transform"
                 :class="{ 'transform rotate-180': showPanel }"
             />
