@@ -1,30 +1,44 @@
 import { defineStore } from 'pinia'
 import { ref, type Ref, computed } from 'vue'
-import { getUserPlaylists } from '@/utils/functions/spotifyUser'
+import { getUser, getUserPlaylists } from '@/utils/functions/spotifyUser'
 
-interface FilteredPlaylistItems {
+export interface FilteredPlaylistMetadata {
     id: string
     name: string
     href: string
 }
 
 export const useSpotifyUserStore = defineStore('spotifyUser', () => {
-    const userPlaylists: Ref<Array<FilteredPlaylistItems>> = ref([])
+    const userId: Ref<string> = ref('')
+    const userPlaylists: Ref<Array<FilteredPlaylistMetadata>> = ref([])
 
-    const getFilteredUserPlaylistItems = async () => {
-        const userPlaylistMetadata = await getUserPlaylists()
+    const getUserId = async () => {
+        const user = await getUser()
 
-        return userPlaylistMetadata.map((playlistItem) => {
+        return user.data.id
+    }
+
+    const getFilteredUserPlaylists = async () => {
+        const userPlaylists = await getUserPlaylists(userId.value)
+
+        return userPlaylists.map((playlist) => {
             return {
-                id: playlistItem.id,
-                name: playlistItem.name,
-                href: playlistItem.images[0].url,
+                id: playlist.id,
+                name: playlist.name,
+                href: playlist.images[0].url,
             }
         })
     }
 
+    const getCount = computed(() => {
+        return userPlaylists.value.length
+    })
+
     return {
+        userId,
+        getUserId,
         userPlaylists,
-        getFilteredUserPlaylistItems,
+        getFilteredUserPlaylists,
+        getCount,
     }
 })

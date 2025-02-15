@@ -2,14 +2,14 @@
 import { onMounted } from 'vue'
 import { useSpotifyUserStore } from '@/stores/spotifyUserStore'
 import { setToken, tokenSet } from '@/utils/functions/spotifyAuth'
-import PlaylistCardItem from '@/components/PlaylistCardItem.vue'
 import { storeToRefs } from 'pinia'
 import { HttpStatusCode } from 'axios'
-import SubHeading from '@/components/typography/SubHeading.vue'
 import AccordionItem from '@/components/ui/AccordionItem.vue'
 
+// TODO: Need to get tracks before passing to accordion as we need to calculate number of duplicates
+
 const spotifyUserStore = useSpotifyUserStore()
-const { userPlaylists } = storeToRefs(spotifyUserStore)
+const { userId, userPlaylists } = storeToRefs(spotifyUserStore)
 
 onMounted(async () => {
     const status = await setToken()
@@ -18,7 +18,8 @@ onMounted(async () => {
         window.location.href = '/'
     }
 
-    userPlaylists.value = await spotifyUserStore.getFilteredUserPlaylistItems()
+    userId.value = await spotifyUserStore.getUserId()
+    userPlaylists.value = await spotifyUserStore.getFilteredUserPlaylists()
 })
 </script>
 
@@ -30,8 +31,9 @@ onMounted(async () => {
             class="w-full flex flex-col items-center"
         >
             <accordion-item
-                :imageHref="playlistMetadata.href"
                 :playlistName="playlistMetadata.name"
+                :playlistId="playlistMetadata.id"
+                :playlistImageHref="playlistMetadata.href"
             />
         </div>
     </div>
