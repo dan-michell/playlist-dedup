@@ -1,5 +1,12 @@
 // Configuration types
 
+export interface PlaylistMetadata {
+    id: string
+    name: string
+    href: string
+    tracks: Array<PlaylistedTrack>
+}
+
 export type RequestImplementation = (
     input: RequestInfo | URL,
     init?: RequestInit | undefined,

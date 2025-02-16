@@ -18,7 +18,7 @@ const countTruncate = computed(() => {
 
 <template>
     <div
-        class="rounded-full flex items-center justify-center min-w-[30px] h-[30px] px-2 bg-warning absolute top-[-15px] right-[-15px]"
+        class="rounded-full flex items-center justify-center min-w-[30px] h-[30px] px-2 bg-warning absolute top-[-15px] right-[-15px] text-white"
     >
         {{ countTruncate }}
     </div>

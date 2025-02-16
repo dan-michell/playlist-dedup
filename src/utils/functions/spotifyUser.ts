@@ -56,7 +56,8 @@ export async function getPlaylistTracks(playlistId: string): Promise<Array<Playl
     try {
         const tracks = []
 
-        const res = await spotify.get(`/playlists/${playlistId}/tracks`, {
+        let res = await spotify.get(`/playlists/${playlistId}/tracks`, {
+            params: { fields: 'items(track(name,artists(name))' },
             headers: { Authorization: `Bearer ${window.localStorage.getItem('access_token')}` },
         })
 
