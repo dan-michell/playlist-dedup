@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, type Ref, onMounted, onBeforeMount } from 'vue'
+import { ref, type Ref, onMounted } from 'vue'
 import { useSpotifyUserStore } from '@/stores/spotifyUserStore'
 import { setToken, tokenSet } from '@/utils/functions/spotifyAuth'
 import { storeToRefs } from 'pinia'
@@ -14,15 +14,20 @@ const { userId, userPlaylists } = storeToRefs(spotifyUserStore)
 
 const loading: Ref<boolean> = ref(true)
 
-onBeforeMount(async () => {
+onMounted(async () => {
     const status = await setToken()
 
     if (status !== HttpStatusCode.Ok || !tokenSet()) {
         window.location.href = '/'
     }
 
-    userId.value = await spotifyUserStore.getUserId()
-    userPlaylists.value = await spotifyUserStore.getUserPlaylistsMetadata()
+    if (!userId.value) {
+        userId.value = await spotifyUserStore.getUserId()
+    }
+
+    if (userPlaylists.value.length === 0) {
+        userPlaylists.value = await spotifyUserStore.getUserPlaylistsMetadata()
+    }
 
     loading.value = false
 })

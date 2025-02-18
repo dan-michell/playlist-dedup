@@ -13,6 +13,9 @@ const showPanel = ref(false)
 const togglePanel = async () => {
     showPanel.value = !showPanel.value
 }
+
+// TODO: List duplicates in dropdown. Each duplicate track has a checkbox to select for removal with select all button
+// For each duplicate show both tracks and a select to choose which track to remove, or a button saying, I don't care, just remove all duplicates.
 </script>
 
 <template>
@@ -37,7 +40,7 @@ const togglePanel = async () => {
                 <span class="sr-only">Toggle accordion</span>
             </button>
         </div>
-        <div v-if="showPanel">
+        <div v-if="showPanel" class="overflow-scroll">
             <li v-for="trackMetadata in tracks" :key="trackMetadata.track.id" class="list-none">
                 <ul>
                     {{

@@ -57,17 +57,21 @@ export async function getPlaylistTracks(playlistId: string): Promise<Array<Playl
         const tracks = []
 
         let res = await spotify.get(`/playlists/${playlistId}/tracks`, {
-            params: { fields: 'items(track(name,artists(name))' },
+            params: { fields: 'next,items(track(name,artists(name))' },
             headers: { Authorization: `Bearer ${window.localStorage.getItem('access_token')}` },
         })
 
         tracks.push(...res.data.items)
+        console.log('TRACK RES', res.data.next)
+        // TODO: Improve performance
+        while (res.data.next) {
+            res = await spotify.get(res.data.next, {
+                params: { fields: 'next,items(track(name,artists(name))' },
+                headers: { Authorization: `Bearer ${window.localStorage.getItem('access_token')}` },
+            })
 
-        // while (res.data.next) {
-        //     res = await axios.get(res.data.next)
-
-        //     tracks.push(...res.data.items)
-        // }
+            tracks.push(...res.data.items)
+        }
 
         return tracks
     } catch (e) {
