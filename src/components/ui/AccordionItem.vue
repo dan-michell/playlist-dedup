@@ -6,7 +6,7 @@ import AlertCountItem from '@/components/ui/AlertCountItem.vue'
 import { type PlaylistMetadata } from '@/types/spotify'
 
 const props = defineProps<PlaylistMetadata>()
-const { name, href, tracks } = toRefs(props)
+const { name, href, tracks, duplicates } = toRefs(props)
 
 const showPanel = ref(false)
 

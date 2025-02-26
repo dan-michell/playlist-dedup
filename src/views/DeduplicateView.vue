@@ -22,11 +22,13 @@ onMounted(async () => {
     }
 
     if (!userId.value) {
-        userId.value = await spotifyUserStore.getUserId()
+        await spotifyUserStore.getUserId()
     }
 
     if (userPlaylists.value.length === 0) {
-        userPlaylists.value = await spotifyUserStore.getUserPlaylistsMetadata()
+        await spotifyUserStore.getUserPlaylistsMetadata()
+
+        // TODO: Calculate duplicate tracks in each playlist
     }
 
     loading.value = false

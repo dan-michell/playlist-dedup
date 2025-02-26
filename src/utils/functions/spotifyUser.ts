@@ -1,5 +1,10 @@
 import axios, { type AxiosResponse } from 'axios'
-import { type User, type Playlist, type PlaylistedTrack } from '@/types/spotify'
+import {
+    type User,
+    type Playlist,
+    type PlaylistedTrack,
+    type PlaylistMetadata,
+} from '@/types/spotify'
 
 const spotify = axios.create({
     baseURL: 'https://api.spotify.com/v1',
@@ -57,12 +62,12 @@ export async function getPlaylistTracks(playlistId: string): Promise<Array<Playl
         const tracks = []
 
         let res = await spotify.get(`/playlists/${playlistId}/tracks`, {
-            params: { fields: 'next,items(track(name,artists(name))' },
+            params: { fields: 'next,items(track(name,artists(name),uri)' },
             headers: { Authorization: `Bearer ${window.localStorage.getItem('access_token')}` },
         })
 
         tracks.push(...res.data.items)
-        console.log('TRACK RES', res.data.next)
+
         // TODO: Improve performance
         while (res.data.next) {
             res = await spotify.get(res.data.next, {
@@ -79,4 +84,24 @@ export async function getPlaylistTracks(playlistId: string): Promise<Array<Playl
         console.error(error_message)
         throw error_message
     }
+}
+
+export function getDuplicateTracks(tracks: Array<PlaylistedTrack>): Array<PlaylistedTrack> {
+    console.log('FIND TRACKS')
+    console.log(tracks)
+
+    const uniqueTracks = tracks.filter((track, index, arr) => {
+        const track_uri = track.track.uri
+        delete track.track.uri
+
+        if (arr.findIndex((item) => JSON.stringify(item) === JSON.stringify(track)) === index) {
+            track.track.uri = track_uri
+            return true
+        }
+
+        return false
+    })
+
+    console.log('UNIQUE ARRAY')
+    console.log(uniqueTracks)
 }

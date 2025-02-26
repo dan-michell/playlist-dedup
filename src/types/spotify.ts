@@ -5,6 +5,7 @@ export interface PlaylistMetadata {
     name: string
     href: string
     tracks: Array<PlaylistedTrack>
+    duplicates: Array<PlaylistedTrack> | []
 }
 
 export type RequestImplementation = (
@@ -638,7 +639,7 @@ export interface SimplifiedTrack {
     track: boolean
     track_number: number
     type: string
-    uri: string
+    uri?: string
     is_playable?: boolean
     linked_from?: LinkedFrom
     restrictions?: Restrictions
